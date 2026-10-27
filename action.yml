@@ -1,0 +1,71 @@
+name: Deplite Run
+description: Run a Deplite workflow from GitHub Actions.
+author: Deplite
+branding:
+  icon: zap
+  color: purple
+
+inputs:
+  api-token:
+    description: Deplite API token (Bearer).
+    required: true
+  agent:
+    description: Name of the Deplite agent.
+    required: true
+  workflow:
+    description: Name of the Deplite workflow.
+    required: true
+  params:
+    description: JSON object of workflow parameters.
+    required: false
+  ref:
+    description: Git branch or tag name. Defaults to GITHUB_REF_NAME.
+    required: false
+  debug:
+    description: Enable debug execution.
+    required: false
+    default: "false"
+  wait:
+    description: Wait for the device workflow to finish.
+    required: false
+    default: "true"
+  wait-timeout-minutes:
+    description: Maximum time to wait for the device workflow. The job continues after timeout.
+    required: false
+    default: "60"
+  logs:
+    description: Show device logs in the GitHub Actions log.
+    required: false
+    default: "true"
+  idempotency-key:
+    description: Override the automatically generated Idempotency-Key.
+    required: false
+  approval-key-id:
+    description: Key ID configured in the device workflow approval policy.
+    required: false
+  approval-secret:
+    description: HMAC secret for workflow approval.
+    required: false
+  approval-private-key:
+    description: PEM private key for Ed25519 or ECDSA P-256 workflow approval.
+    required: false
+  base-url:
+    description: Override the Deplite API base URL.
+    required: false
+    default: https://api.deplite.io/v1
+
+outputs:
+  job-id:
+    description: UUID of the dispatched job.
+  status:
+    description: Job status returned by Deplite.
+  exit-code:
+    description: Exit code reported by the device workflow.
+  output:
+    description: Job output payload as a JSON string.
+  console-url:
+    description: URL of the job in the Deplite console.
+
+runs:
+  using: node24
+  main: dist/index.js
